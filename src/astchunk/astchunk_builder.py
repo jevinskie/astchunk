@@ -6,6 +6,7 @@ import tree_sitter_python as tspython
 import tree_sitter_java as tsjava
 import tree_sitter_c_sharp as tscsharp
 import tree_sitter_typescript as tstypescript
+import tree_sitter_c as tsc
 import pyrsistent
 
 from astchunk.astnode import ASTNode
@@ -37,6 +38,8 @@ class ASTChunkBuilder():
             self.parser = ts.Parser(ts.Language(tscsharp.language()))
         elif self.language == "typescript":
             self.parser = ts.Parser(ts.Language(tstypescript.language_tsx()))
+        elif self.language == "c":
+            self.parser = ts.Parser(ts.Language(tsc.language()))
         else:
             raise ValueError(f"Unsupported Programming Language: {self.language}!")
 
