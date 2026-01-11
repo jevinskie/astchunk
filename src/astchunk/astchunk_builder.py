@@ -1,5 +1,8 @@
 import numpy as np
-from typing import Generator
+from typing import Any, Generator
+
+from copy import copy
+from rich import print
 
 import tree_sitter as ts
 import tree_sitter_python as tspython
@@ -7,6 +10,7 @@ import tree_sitter_java as tsjava
 import tree_sitter_c_sharp as tscsharp
 import tree_sitter_typescript as tstypescript
 import tree_sitter_c as tsc
+import tree_sitter_cpp as tscpp
 import pyrsistent
 
 from astchunk.astnode import ASTNode
@@ -40,6 +44,8 @@ class ASTChunkBuilder():
             self.parser = ts.Parser(ts.Language(tstypescript.language_tsx()))
         elif self.language == "c":
             self.parser = ts.Parser(ts.Language(tsc.language()))
+        elif self.language == "cpp":
+            self.parser = ts.Parser(ts.Language(tscpp.language()))
         else:
             raise ValueError(f"Unsupported Programming Language: {self.language}!")
 
@@ -76,6 +82,9 @@ class ASTChunkBuilder():
             yield from self.assign_nodes_to_windows(root_node.children, nws_cumsum, ancestors)
     
     def assign_nodes_to_windows(self, nodes: list[ts.Node], nws_cumsum: np.ndarray, ancestors: pyrsistent.pvector) -> Generator[list[ASTNode], None, None]:
+        onodes = copy(nodes)
+        ocs = copy(nws_cumsum)
+        oa = copy(ancestors)
         """
         Assign AST nodes to windows. A window is a tentative chunk consists of ASTNode before being converted into ASTChunk.
 
@@ -116,6 +125,9 @@ class ASTChunkBuilder():
                 
                 # Clear current window if not empty
                 if len(current_window) > 0:
+                    print(f"cw2: {type(current_window)} {{}}".format(current_window))
+                    print(current_window)
+                    print(current_window[0])
                     yield current_window
                     current_window = []
                     current_window_size = 0
@@ -125,6 +137,9 @@ class ASTChunkBuilder():
                     childs_ancestors = ancestors.append(node)
                     child_windows = list(self.assign_nodes_to_windows(node.children, nws_cumsum, childs_ancestors))
                     if child_windows:
+                        print(f"cw3: child_windows {type(child_windows)}")
+                        print(child_windows)
+                        print(child_windows[0])
                         # (optional) Greedily merge adjacent windows from the beginning if merged window does not exceed self.max_chunk_size
                         yield from self.merge_adjacent_windows(child_windows)
                 else:
@@ -139,6 +154,8 @@ class ASTChunkBuilder():
 
         # Add the last window if it's not empty
         if len(current_window) > 0:
+            print(f"cw: {current_window}")
+            print(current_window)
             yield current_window
     
     def merge_adjacent_windows(self, ast_windows: list[list[ASTNode]]) -> Generator[list[ASTNode], None, None]:
@@ -294,7 +311,7 @@ class ASTChunkBuilder():
     # ------------------------------ #
     #       AST Chunking Logic       #
     # ------------------------------ #
-    def chunkify(self, code: str, **configs) -> list[dict]:
+    def chunkify(self, code: str, **configs) -> tuple[list[list[ASTNode]], Any, list[dict]]:
         '''
         Parse a piece of code into structual-aware chunks using AST.
 
@@ -310,6 +327,8 @@ class ASTChunkBuilder():
             root_node=ast.root_node
         ))
         # [after this step]: list[list[ASTNode]] where each sublist represents an AST window
+        r2 = ast_windows
+        r3 = ast
 
         # step 2 (optional): add overlapping
         #                    for each window, take the last k ASTNodes from the previous window and the first k ASTNodes from the next window
@@ -333,4 +352,5 @@ class ASTChunkBuilder():
         )
         # [after this step]: list[dict] where each dict represents a code window
 
-        return code_windows
+        # return code_windows
+        return r2, r3, code_windows

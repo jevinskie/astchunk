@@ -1,6 +1,7 @@
 import tree_sitter as ts
 
 from astchunk.preprocessing import ByteRange
+from rich.repr import RichReprResult
 
 
 class ASTNode():
@@ -27,6 +28,7 @@ class ASTNode():
     
     @property
     def strcode(self):
+        assert self.bcode is not None
         return self.bcode.decode("utf8")
     
     @property
@@ -62,3 +64,8 @@ class ASTNode():
         Define length as the number of lines covered by the node
         """
         return self.end_line - self.start_line + 1
+
+    def __rich_repr__(self) -> RichReprResult:
+        yield "Node", self.node
+        yield "NodeSize", self.node_size
+        yield "Ancestors", self.ancestors
