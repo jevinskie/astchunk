@@ -2,6 +2,9 @@ import tree_sitter as ts
 
 from astchunk.preprocessing import ByteRange
 from rich.repr import RichReprResult
+from rich.syntax import Syntax
+from rich.console import Console, ConsoleOptions, RenderResult
+from rich.text import Text
 
 
 class ASTNode():
@@ -65,7 +68,16 @@ class ASTNode():
         """
         return self.end_line - self.start_line + 1
 
-    def __rich_repr__(self) -> RichReprResult:
-        yield "Node", self.node
-        yield "NodeSize", self.node_size
-        yield "Ancestors", self.ancestors
+    # def __rich_repr__(self) -> RichReprResult:
+    #     yield "Node", self.node
+    #     syntax = Syntax(self.strcode, "c").highlight(self.strcode)
+    #     yield "Code", syntax.markup
+    #     yield "NodeSize", self.node_size
+    #     yield "Ancestors", self.ancestors
+
+    def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
+        yield f"[b]Node:[/b] #{self.node}"
+        syntax = Syntax(self.strcode, "c").highlight(self.strcode)
+        yield syntax
+        yield f"[b]NodeSize:[/b] #{self.node_size}"
+        yield f"[b]Ancestors:[/b] #{self.ancestors}"
