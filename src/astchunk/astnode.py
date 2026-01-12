@@ -77,7 +77,7 @@ class ASTNode():
 
     def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
         yield f"[b]Node:[/b] #{self.node}"
-        syntax = Syntax(self.strcode, "c").highlight(self.strcode)
+        syntax = Syntax(self.strcode, "c", background_color="default").highlight(self.strcode)
         yield syntax
         yield f"[b]NodeSize:[/b] #{self.node_size}"
         yield f"[b]Ancestors:[/b] #{self.ancestors}"
