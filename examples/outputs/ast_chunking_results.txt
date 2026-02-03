@@ -1,3 +1,1081 @@
-AST Chunking Results (max 1800 non-whitespace chars per chunk)
+AST Chunking Results (max 128 non-whitespace chars per chunk)
 ================================================================================
+
+------------------------- Chunk 1 (7 lines / 98 chars) -------------------------
+#ifndef UTHASH_H
+#define UTHASH_H
+
+#define UTHASH_VERSION 2.3.0
+
+#include <string.h>   /* memcmp, memset, strlen */
+
+--------------------------------------------------------------------------------
+
+------------------------- Chunk 2 (5 lines / 99 chars) -------------------------
+#include <stddef.h>   /* ptrdiff_t */
+#include <stdlib.h>   /* exit */
+
+#if defined(HASH_NO_STDINT) && HASH_NO_STDINT
+
+--------------------------------------------------------------------------------
+
+------------------------- Chunk 3 (2 lines / 102 chars) -------------------------
+/* The user doesn't have <stdint.h>, and must figure out their own way
+   to provide definitions for uint8_t and uint32_t. */
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 4 (11 lines / 127 chars) -------------------------
+#else
+#include <stdint.h>   /* uint8_t, uint32_t */
+#endif
+
+
+
+
+
+#if !defined(DECLTYPE) && !defined(NO_DECLTYPE)
+#if defined(_MSC_VER)   /* MS compiler */
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 5 (3 lines / 96 chars) -------------------------
+#if _MSC_VER >= 1600 && defined(__cplusplus)  /* VS2010 or newer in C++ mode */
+#define DECLTYPE(x) (decltype(x))
+
+--------------------------------------------------------------------------------
+
+------------------------- Chunk 6 (3 lines / 63 chars) -------------------------
+#else                   /* VS2008 or older (or VS2010 in C mode) */
+#define NO_DECLTYPE
+#endif
+--------------------------------------------------------------------------------
+
+------------------------- Chunk 7 (3 lines / 72 chars) -------------------------
+#elif defined(__MCST__)  /* Elbrus C Compiler */
+#define DECLTYPE(x) (__typeof(x))
+
+--------------------------------------------------------------------------------
+
+------------------------- Chunk 8 (3 lines / 105 chars) -------------------------
+#elif defined(__BORLANDC__) || defined(__ICCARM__) || defined(__LCC__) || defined(__WATCOMC__)
+#define NO_DECLTYPE
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 9 (8 lines / 111 chars) -------------------------
+#else                   /* GNU, Sun and other compilers */
+#define DECLTYPE(x) (__typeof(x))
+#endif
+#endif
+
+#ifdef NO_DECLTYPE
+#define DECLTYPE(x)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 10 (6 lines / 100 chars) -------------------------
+#define DECLTYPE_ASSIGN(dst,src)                                                 \
+do {                                                                             \
+  char **_da_dst = (char**)(&(dst));                                             \
+  *_da_dst = (char*)(src);                                                       \
+} while (0)
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 11 (6 lines / 82 chars) -------------------------
+#else
+#define DECLTYPE_ASSIGN(dst,src)                                                 \
+do {                                                                             \
+  (dst) = DECLTYPE(dst)(src);                                                    \
+} while (0)
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 12 (3 lines / 73 chars) -------------------------
+#ifndef uthash_malloc
+#define uthash_malloc(sz) malloc(sz)      /* malloc fcn                      */
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 13 (3 lines / 70 chars) -------------------------
+#ifndef uthash_free
+#define uthash_free(ptr,sz) free(ptr)     /* free fcn                        */
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 14 (6 lines / 123 chars) -------------------------
+#ifndef uthash_bzero
+#define uthash_bzero(a,n) memset(a,'\0',n)
+#endif
+#ifndef uthash_strlen
+#define uthash_strlen(s) strlen(s)
+#endif
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 15 (3 lines / 96 chars) -------------------------
+#ifndef HASH_FUNCTION
+#define HASH_FUNCTION(keyptr,keylen,hashv) HASH_JEN(keyptr, keylen, hashv)
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 16 (3 lines / 62 chars) -------------------------
+#ifndef HASH_KEYCMP
+#define HASH_KEYCMP(a,b,n) memcmp(a,b,n)
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 17 (3 lines / 92 chars) -------------------------
+#ifndef uthash_noexpand_fyi
+#define uthash_noexpand_fyi(tbl)          /* can be defined to log noexpand  */
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 18 (3 lines / 87 chars) -------------------------
+#ifndef uthash_expand_fyi
+#define uthash_expand_fyi(tbl)            /* can be defined to log expands   */
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 19 (6 lines / 111 chars) -------------------------
+#ifndef HASH_NONFATAL_OOM
+#define HASH_NONFATAL_OOM 0
+#endif
+
+#if HASH_NONFATAL_OOM
+/* malloc failures can be recovered from */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 20 (3 lines / 96 chars) -------------------------
+#ifndef uthash_nonfatal_oom
+#define uthash_nonfatal_oom(obj) do {} while (0)    /* non-fatal OOM error */
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 21 (3 lines / 82 chars) -------------------------
+#define HASH_RECORD_OOM(oomed) do { (oomed) = 1; } while (0)
+#define IF_HASH_NONFATAL_OOM(x) x
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 22 (2 lines / 63 chars) -------------------------
+#else
+/* malloc failures result in lost memory, hash tables are unusable */
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 23 (3 lines / 74 chars) -------------------------
+#ifndef uthash_fatal
+#define uthash_fatal(msg) exit(-1)        /* fatal OOM error */
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 24 (4 lines / 92 chars) -------------------------
+#define HASH_RECORD_OOM(oomed) uthash_fatal("out of memory")
+#define IF_HASH_NONFATAL_OOM(x)
+
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 25 (3 lines / 86 chars) -------------------------
+/* initial number of buckets */
+#define HASH_INITIAL_NUM_BUCKETS 32U     /* initial number of buckets        */
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 26 (2 lines / 69 chars) -------------------------
+#define HASH_INITIAL_NUM_BUCKETS_LOG2 5U /* lg2 of initial number of buckets */
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 27 (3 lines / 116 chars) -------------------------
+#define HASH_BKT_CAPACITY_THRESH 10U     /* expand when bucket count reaches */
+
+/* calculate the element whose hash handle address is hhp */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 28 (2 lines / 113 chars) -------------------------
+#define ELMT_FROM_HH(tbl,hhp) ((void*)(((char*)(hhp)) - ((tbl)->hho)))
+/* calculate the hash handle from element address elp */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 29 (3 lines / 126 chars) -------------------------
+#define HH_FROM_ELMT(tbl,elp) ((UT_hash_handle*)(void*)(((char*)(elp)) + ((tbl)->hho)))
+
+#define HASH_ROLLBACK_BKT(hh, head, itemptrhh)
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 30 (5 lines / 88 chars) -------------------------
+#define HASH_VALUE(keyptr,keylen,hashv)                                          \
+do {                                                                             \
+  HASH_FUNCTION(keyptr, keylen, hashv);                                          \
+} while (0)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 31 (13 lines / 106 chars) -------------------------
+#define HASH_FIND_BYHASHVALUE(hh,head,keyptr,keylen,hashval,out)
+
+
+
+
+
+
+
+
+
+
+
+#define HASH_FIND(hh,head,keyptr,keylen,out)
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 32 (3 lines / 57 chars) -------------------------
+#ifdef HASH_BLOOM
+#define HASH_BLOOM_BITLEN (1UL << HASH_BLOOM)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 33 (2 lines / 122 chars) -------------------------
+#define HASH_BLOOM_BYTELEN (HASH_BLOOM_BITLEN/8UL) + (((HASH_BLOOM_BITLEN%8UL)!=0UL) ? 1UL : 0UL)
+#define HASH_BLOOM_MAKE(tbl,oomed)
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 34 (5 lines / 90 chars) -------------------------
+#define HASH_BLOOM_FREE(tbl)                                                     \
+do {                                                                             \
+  uthash_free((tbl)->bloom_bv, HASH_BLOOM_BYTELEN);                              \
+} while (0)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 35 (2 lines / 64 chars) -------------------------
+#define HASH_BLOOM_BITSET(bv,idx) (bv[(idx)/8U] |= (1U << ((idx)%8U)))
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 36 (2 lines / 69 chars) -------------------------
+#define HASH_BLOOM_BITTEST(bv,idx) ((bv[(idx)/8U] & (1U << ((idx)%8U))) != 0)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 37 (3 lines / 118 chars) -------------------------
+#define HASH_BLOOM_ADD(tbl,hashv)                                                \
+  HASH_BLOOM_BITSET((tbl)->bloom_bv, ((hashv) & (uint32_t)((1UL << (tbl)->bloom_nbits) - 1U)))
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 38 (3 lines / 120 chars) -------------------------
+#define HASH_BLOOM_TEST(tbl,hashv)                                               \
+  HASH_BLOOM_BITTEST((tbl)->bloom_bv, ((hashv) & (uint32_t)((1UL << (tbl)->bloom_nbits) - 1U)))
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 39 (5 lines / 97 chars) -------------------------
+#else
+#define HASH_BLOOM_MAKE(tbl,oomed)
+#define HASH_BLOOM_FREE(tbl)
+#define HASH_BLOOM_ADD(tbl,hashv)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 40 (5 lines / 104 chars) -------------------------
+#define HASH_BLOOM_TEST(tbl,hashv) 1
+#define HASH_BLOOM_BYTELEN 0U
+#endif
+
+#define HASH_MAKE_TABLE(hh,head,oomed)
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 41 (1 lines / 96 chars) -------------------------
+#define HASH_REPLACE_BYHASHVALUE_INORDER(hh,head,fieldname,keylen_in,hashval,add,replaced,cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 42 (1 lines / 81 chars) -------------------------
+#define HASH_REPLACE_BYHASHVALUE(hh,head,fieldname,keylen_in,hashval,add,replaced)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 43 (1 lines / 61 chars) -------------------------
+#define HASH_REPLACE(hh,head,fieldname,keylen_in,add,replaced)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 44 (8 lines / 112 chars) -------------------------
+#define HASH_REPLACE_INORDER(hh,head,fieldname,keylen_in,add,replaced,cmpfcn)
+
+
+
+
+
+
+#define HASH_APPEND_LIST(hh, head, add)
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 45 (1 lines / 47 chars) -------------------------
+#define HASH_AKBI_INNER_LOOP(hh,head,add,cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 46 (15 lines / 96 chars) -------------------------
+#ifdef NO_DECLTYPE
+#undef HASH_AKBI_INNER_LOOP
+#define HASH_AKBI_INNER_LOOP(hh,head,add,cmpfcn)
+
+
+
+
+
+
+
+
+
+
+
+#endif
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 47 (3 lines / 88 chars) -------------------------
+#if HASH_NONFATAL_OOM
+
+#define HASH_ADD_TO_TABLE(hh,head,keyptr,keylen_in,hashval,add,oomed)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 48 (13 lines / 79 chars) -------------------------
+#else
+
+#define HASH_ADD_TO_TABLE(hh,head,keyptr,keylen_in,hashval,add,oomed)
+
+
+
+
+
+
+
+
+
+#endif
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 49 (1 lines / 87 chars) -------------------------
+#define HASH_ADD_KEYPTR_BYHASHVALUE_INORDER(hh,head,keyptr,keylen_in,hashval,add,cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 50 (1 lines / 67 chars) -------------------------
+#define HASH_ADD_KEYPTR_INORDER(hh,head,keyptr,keylen_in,add,cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 51 (1 lines / 83 chars) -------------------------
+#define HASH_ADD_BYHASHVALUE_INORDER(hh,head,fieldname,keylen_in,hashval,add,cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 52 (1 lines / 93 chars) -------------------------
+  HASH_ADD_KEYPTR_BYHASHVALUE_INORDER(hh, head, &((add)->fieldname), keylen_in, hashval, add, cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 53 (1 lines / 63 chars) -------------------------
+#define HASH_ADD_INORDER(hh,head,fieldname,keylen_in,add,cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 54 (1 lines / 73 chars) -------------------------
+  HASH_ADD_KEYPTR_INORDER(hh, head, &((add)->fieldname), keylen_in, add, cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 55 (22 lines / 124 chars) -------------------------
+#define HASH_ADD_KEYPTR_BYHASHVALUE(hh,head,keyptr,keylen_in,hashval,add)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define HASH_ADD_KEYPTR(hh,head,keyptr,keylen_in,add)
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 56 (1 lines / 68 chars) -------------------------
+#define HASH_ADD_BYHASHVALUE(hh,head,fieldname,keylen_in,hashval,add)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 57 (1 lines / 78 chars) -------------------------
+  HASH_ADD_KEYPTR_BYHASHVALUE(hh, head, &((add)->fieldname), keylen_in, hashval, add)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 58 (3 lines / 107 chars) -------------------------
+#define HASH_ADD(hh,head,fieldname,keylen_in,add)                                \
+  HASH_ADD_KEYPTR(hh, head, &((add)->fieldname), keylen_in, add)
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 59 (5 lines / 83 chars) -------------------------
+#define HASH_TO_BKT(hashv,num_bkts,bkt)                                          \
+do {                                                                             \
+  bkt = ((hashv) & ((num_bkts) - 1U));                                           \
+} while (0)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 60 (4 lines / 111 chars) -------------------------
+#define HASH_DELETE(hh,head,delptr)                                              \
+    HASH_DELETE_HH(hh, head, &(delptr)->hh)
+
+#define HASH_DELETE_HH(hh,head,delptrhh)
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 61 (7 lines / 125 chars) -------------------------
+/* convenience forms of HASH_FIND/HASH_ADD/HASH_DEL */
+#define HASH_FIND_STR(head,findstr,out)
+
+
+
+
+#define HASH_ADD_STR(head,strfield,add)
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 62 (1 lines / 51 chars) -------------------------
+#define HASH_REPLACE_STR(head,strfield,add,replaced)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 63 (3 lines / 81 chars) -------------------------
+#define HASH_FIND_INT(head,findint,out)                                          \
+    HASH_FIND(hh,head,findint,sizeof(int),out)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 64 (3 lines / 81 chars) -------------------------
+#define HASH_ADD_INT(head,intfield,add)                                          \
+    HASH_ADD(hh,head,intfield,sizeof(int),add)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 65 (3 lines / 107 chars) -------------------------
+#define HASH_REPLACE_INT(head,intfield,add,replaced)                             \
+    HASH_REPLACE(hh,head,intfield,sizeof(int),add,replaced)
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 66 (3 lines / 83 chars) -------------------------
+#define HASH_FIND_PTR(head,findptr,out)                                          \
+    HASH_FIND(hh,head,findptr,sizeof(void *),out)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 67 (3 lines / 83 chars) -------------------------
+#define HASH_ADD_PTR(head,ptrfield,add)                                          \
+    HASH_ADD(hh,head,ptrfield,sizeof(void *),add)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 68 (3 lines / 109 chars) -------------------------
+#define HASH_REPLACE_PTR(head,ptrfield,add,replaced)                             \
+    HASH_REPLACE(hh,head,ptrfield,sizeof(void *),add,replaced)
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 69 (3 lines / 56 chars) -------------------------
+#define HASH_DEL(head,delptr)                                                    \
+    HASH_DELETE(hh,head,delptr)
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 70 (4 lines / 121 chars) -------------------------
+#ifdef HASH_DEBUG
+#include <stdio.h>   /* fprintf, stderr */
+#define HASH_OOPS(...) do { fprintf(stderr, __VA_ARGS__); exit(-1); } while (0)
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 71 (51 lines / 73 chars) -------------------------
+#define HASH_FSCK(hh,head,where)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#else
+#define HASH_FSCK(hh,head,where)
+#endif
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 72 (10 lines / 121 chars) -------------------------
+#ifdef HASH_EMIT_KEYS
+#define HASH_EMIT_KEY(hh,head,keyptr,fieldlen)
+
+
+
+
+
+#else
+#define HASH_EMIT_KEY(hh,head,keyptr,fieldlen)
+#endif
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 73 (2 lines / 102 chars) -------------------------
+/* The Bernstein hash function, used in Perl prior to v5.6. Note (x<<5+x)=x*33. */
+#define HASH_BER(key,keylen,hashv)
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 74 (22 lines / 118 chars) -------------------------
+#define HASH_SAX(key,keylen,hashv)
+
+
+
+
+
+
+
+
+/* FNV-1a variation */
+#define HASH_FNV(key,keylen,hashv)
+
+
+
+
+
+
+
+
+
+
+#define HASH_OAT(key,keylen,hashv)
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 75 (39 lines / 74 chars) -------------------------
+#define HASH_JEN_MIX(a,b,c)
+
+
+
+
+
+
+
+
+
+
+
+
+#define HASH_JEN(key,keylen,hashv)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                       /* FALLTHROUGH */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 76 (2 lines / 110 chars) -------------------------
+    case 10: hashv += ( (unsigned)_hj_key[9] << 16 );  /* FALLTHROUGH */
+    case 9:  hashv += ( (unsigned)_hj_key[8] << 8 );   /* FALLTHROUGH */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 77 (2 lines / 110 chars) -------------------------
+    case 8:  _hj_j += ( (unsigned)_hj_key[7] << 24 );  /* FALLTHROUGH */
+    case 7:  _hj_j += ( (unsigned)_hj_key[6] << 16 );  /* FALLTHROUGH */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 78 (2 lines / 93 chars) -------------------------
+    case 6:  _hj_j += ( (unsigned)_hj_key[5] << 8 );   /* FALLTHROUGH */
+    case 5:  _hj_j += _hj_key[4];                      /* FALLTHROUGH */
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 79 (2 lines / 110 chars) -------------------------
+    case 4:  _hj_i += ( (unsigned)_hj_key[3] << 24 );  /* FALLTHROUGH */
+    case 3:  _hj_i += ( (unsigned)_hj_key[2] << 16 );  /* FALLTHROUGH */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 80 (2 lines / 93 chars) -------------------------
+    case 2:  _hj_i += ( (unsigned)_hj_key[1] << 8 );   /* FALLTHROUGH */
+    case 1:  _hj_i += _hj_key[0];                      /* FALLTHROUGH */
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 81 (8 lines / 96 chars) -------------------------
+    default: ;                                                                   \
+  }                                                                              \
+  HASH_JEN_MIX(_hj_i, _hj_j, hashv);
+} while (0)
+
+/* The Paul Hsieh hash function */
+#undef get16bits
+
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 82 (3 lines / 127 chars) -------------------------
+#if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__)             \
+  || defined(_MSC_VER) || defined (__BORLANDC__) || defined (__TURBOC__)
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 83 (2 lines / 49 chars) -------------------------
+#define get16bits(d) (*((const uint16_t *) (d)))
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 84 (4 lines / 128 chars) -------------------------
+#if !defined (get16bits)
+#define get16bits(d) ((((uint32_t)(((const uint8_t *)(d))[1])) << 8)             \
+                       +(uint32_t)(((const uint8_t *)(d))[0]) )
+#endif
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 85 (11 lines / 73 chars) -------------------------
+#define HASH_SFH(key,keylen,hashv)
+
+
+
+
+
+
+
+
+  /* Main loop */
+  for (;_sfh_len > 0U; _sfh_len--)
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 86 (4 lines / 110 chars) -------------------------
+                                   {
+    hashv    += get16bits (_sfh_key);
+    _sfh_tmp  = ((uint32_t)(get16bits (_sfh_key+2)) << 11) ^ hashv;
+    hashv     = (hashv << 16) ^ _sfh_tmp;
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 87 (6 lines / 82 chars) -------------------------
+    _sfh_key += 2U*sizeof (uint16_t);
+    hashv    += hashv >> 11;
+  }
+
+  /* Handle end cases */
+  switch (_sfh_rem)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 88 (6 lines / 128 chars) -------------------------
+                    {
+    case 3: hashv += get16bits (_sfh_key);                                       \
+            hashv ^= hashv << 16;                                                \
+            hashv ^= (uint32_t)(_sfh_key[sizeof (uint16_t)]) << 18;              \
+            hashv += hashv >> 11;                                                \
+            break;
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 89 (4 lines / 76 chars) -------------------------
+    case 2: hashv += get16bits (_sfh_key);                                       \
+            hashv ^= hashv << 11;                                                \
+            hashv += hashv >> 17;                                                \
+            break;
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 90 (6 lines / 75 chars) -------------------------
+    case 1: hashv += *_sfh_key;                                                  \
+            hashv ^= hashv << 10;                                                \
+            hashv += hashv >> 1;                                                 \
+            break;
+    default: ;
+  }
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 91 (6 lines / 118 chars) -------------------------
+  /* Force "avalanching" of final 127 bits */
+  hashv ^= hashv << 3;
+  hashv += hashv >> 5;
+  hashv ^= hashv << 4;
+  hashv += hashv >> 17;
+  hashv ^= hashv << 25;
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 92 (4 lines / 76 chars) -------------------------
+  hashv += hashv >> 6;
+} while (0)
+
+/* iterate over items in a known bucket to find desired item */
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 93 (22 lines / 87 chars) -------------------------
+#define HASH_FIND_IN_BKT(tbl,hh,head,keyptr,keylen_in,hashval,out)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* add an item to a bucket  */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 94 (23 lines / 109 chars) -------------------------
+#define HASH_ADD_TO_BKT(head,hh,addhh,oomed)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* remove an item from a given bucket */
+#define HASH_DEL_IN_BKT(head,delhh)
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 95 (54 lines / 96 chars) -------------------------
+#define HASH_EXPAND_BUCKETS(hh,tbl,oomed)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* This is an adaptation of Simon Tatham's O(n log(n)) mergesort */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 96 (2 lines / 106 chars) -------------------------
+/* Note that HASH_SORT assumes the hash handle name to be hh.
+ * HASH_SRT was added to allow the hash handle name to be passed in. */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 97 (2 lines / 84 chars) -------------------------
+#define HASH_SORT(head,cmpfcn) HASH_SRT(hh,head,cmpfcn)
+#define HASH_SRT(hh,head,cmpfcn)
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 98 (70 lines / 101 chars) -------------------------
+#define HASH_SELECT(hh_dst, dst, hh_src, src, cond)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define HASH_CLEAR(hh,head)
+
+
+
+
+
+
+
+
+
+
+#define HASH_OVERHEAD(hh,head)
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 99 (9 lines / 92 chars) -------------------------
+#ifdef NO_DECLTYPE
+#define HASH_ITER(hh,head,el,tmp)
+
+
+#else
+#define HASH_ITER(hh,head,el,tmp)
+
+
+#endif
+---------------------------------------------------------------------------------
+
+------------------------- Chunk 100 (3 lines / 72 chars) -------------------------
+/* obtain a count of items in the hash */
+#define HASH_COUNT(head) HASH_CNT(hh,head)
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 101 (2 lines / 69 chars) -------------------------
+#define HASH_CNT(hh,head) ((head != NULL)?((head)->hh.tbl->num_items):0U)
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 102 (19 lines / 107 chars) -------------------------
+typedef struct UT_hash_bucket {
+   struct UT_hash_handle *hh_head;
+   unsigned count;
+
+
+
+
+
+
+
+
+
+
+
+
+
+   unsigned expand_mult;
+
+} UT_hash_bucket;
+------------------------------------------------------------------------------------
+
+------------------------- Chunk 103 (3 lines / 93 chars) -------------------------
+/* random signature used only to find hash tables in external analysis */
+#define HASH_SIGNATURE 0xa0111fe1u
+
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 104 (3 lines / 45 chars) -------------------------
+#define HASH_BLOOM_SIGNATURE 0xb12220f2u
+
+typedef
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 105 (5 lines / 124 chars) -------------------------
+        struct UT_hash_table {
+   UT_hash_bucket *buckets;
+   unsigned num_buckets, log2_num_buckets;
+   unsigned num_items;
+   struct UT_hash_handle *tail;
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 106 (2 lines / 96 chars) -------------------------
+                                /* tail hh in app order, for fast append    */
+   ptrdiff_t hho; /* hash handle offset (byte pos of hash handle in element */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 107 (2 lines / 125 chars) -------------------------
+   /* in an ideal situation (all buckets used equally), no bucket would have
+    * more than ceil(#items/#buckets) items. that's the ideal chain length. */
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 108 (6 lines / 50 chars) -------------------------
+   unsigned ideal_chain_maxlen;
+
+
+
+
+   unsigned nonideal_items;
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 109 (3 lines / 95 chars) -------------------------
+   unsigned ineff_expands, noexpand;
+
+   uint32_t signature; /* used only to find hash tables in external analysis */
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 110 (7 lines / 124 chars) -------------------------
+#ifdef HASH_BLOOM
+   uint32_t bloom_sig; /* used only to test bloom exists in external analysis */
+   uint8_t *bloom_bv;
+   uint8_t bloom_nbits;
+#endif
+
+}
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 111 (3 lines / 41 chars) -------------------------
+  UT_hash_table;
+
+typedef struct UT_hash_handle
+----------------------------------------------------------------------------------
+
+------------------------- Chunk 112 (5 lines / 124 chars) -------------------------
+                              {
+   struct UT_hash_table *tbl;
+   void *prev;                       /* prev element in app order      */
+   void *next;                       /* next element in app order      */
+   struct UT_hash_handle *hh_prev;
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 113 (3 lines / 122 chars) -------------------------
+                                     /* previous hh in bucket order    */
+   struct UT_hash_handle *hh_next;   /* next hh in bucket order        */
+   const void *key;                  /* ptr to enclosing struct's key  */
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 114 (5 lines / 103 chars) -------------------------
+   unsigned keylen;                  /* enclosing struct's key len     */
+   unsigned hashv;                   /* result of hash-fcn(key)        */
+} UT_hash_handle;
+
+#endif
+-----------------------------------------------------------------------------------
+
+------------------------- Chunk 115 (1 lines / 12 chars) -------------------------
+       /* UTHASH_H */
+----------------------------------------------------------------------------------
 

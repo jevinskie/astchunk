@@ -44,7 +44,7 @@ def main():
         code = f.read()
     
     # Set max chunk size (in lines)
-    max_chunk_size = 50 
+    max_chunk_size = 4
     
     # Create chunks
     chunks = chunkify(code, max_chunk_size)

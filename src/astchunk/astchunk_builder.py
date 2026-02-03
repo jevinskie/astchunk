@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Any, Generator
 
-from copy import copy
+# from copy import copy
 # from rich import print
 
 import tree_sitter as ts
@@ -82,9 +82,6 @@ class ASTChunkBuilder():
             yield from self.assign_nodes_to_windows(root_node.children, nws_cumsum, ancestors)
     
     def assign_nodes_to_windows(self, nodes: list[ts.Node], nws_cumsum: np.ndarray, ancestors: pyrsistent.pvector) -> Generator[list[ASTNode], None, None]:
-        onodes = copy(nodes)
-        ocs = copy(nws_cumsum)
-        oa = copy(ancestors)
         """
         Assign AST nodes to windows. A window is a tentative chunk consists of ASTNode before being converted into ASTChunk.
 
@@ -311,7 +308,8 @@ class ASTChunkBuilder():
     # ------------------------------ #
     #       AST Chunking Logic       #
     # ------------------------------ #
-    def chunkify(self, code: str, **configs) -> tuple[list[list[ASTNode]], Any, list[dict]]:
+    # def chunkify(self, code: str, **configs) -> tuple[list[list[ASTNode]], Any, list[dict]]:
+    def chunkify(self, code: str, **configs) -> list[dict]:
         '''
         Parse a piece of code into structual-aware chunks using AST.
 
@@ -352,5 +350,5 @@ class ASTChunkBuilder():
         )
         # [after this step]: list[dict] where each dict represents a code window
 
-        # return code_windows
-        return r2, r3, code_windows
+        return code_windows
+        # return r2, r3, code_windows

@@ -17,14 +17,16 @@ def main():
         code = f.read()
 
     configs = {
-        "max_chunk_size": 1800,
-        "language": "python",
-        # "language": "c",
+        # "max_chunk_size": 1800,
+        "max_chunk_size": 128,
+        # "language": "python",
+        "language": "c",
         "metadata_template": "default",
         "chunk_expansion": True,
-        "repo_level_metadata": {
-            "filepath": "code_module"
-        }
+        # "chunk_expansion": False,
+        # "repo_level_metadata": {
+        #     "filepath": "uthash.h"
+        # }
     }
     
     # Initialize AST chunk builder
