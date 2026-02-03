@@ -2,7 +2,7 @@ import numpy as np
 from typing import Any, Generator
 
 from copy import copy
-from rich import print
+# from rich import print
 
 import tree_sitter as ts
 import tree_sitter_python as tspython
@@ -125,9 +125,9 @@ class ASTChunkBuilder():
                 
                 # Clear current window if not empty
                 if len(current_window) > 0:
-                    print(f"cw2: {type(current_window)} {{}}".format(current_window))
-                    print(current_window)
-                    print(current_window[0])
+                    # print(f"cw2: {type(current_window)} {{}}".format(current_window))
+                    # print(current_window)
+                    # print(current_window[0])
                     yield current_window
                     current_window = []
                     current_window_size = 0
@@ -137,9 +137,9 @@ class ASTChunkBuilder():
                     childs_ancestors = ancestors.append(node)
                     child_windows = list(self.assign_nodes_to_windows(node.children, nws_cumsum, childs_ancestors))
                     if child_windows:
-                        print(f"cw3: child_windows {type(child_windows)}")
-                        print(child_windows)
-                        print(child_windows[0])
+                        # print(f"cw3: child_windows {type(child_windows)}")
+                        # print(child_windows)
+                        # print(child_windows[0])
                         # (optional) Greedily merge adjacent windows from the beginning if merged window does not exceed self.max_chunk_size
                         yield from self.merge_adjacent_windows(child_windows)
                 else:
@@ -154,8 +154,8 @@ class ASTChunkBuilder():
 
         # Add the last window if it's not empty
         if len(current_window) > 0:
-            print(f"cw: {current_window}")
-            print(current_window)
+            # print(f"cw: {current_window}")
+            # print(current_window)
             yield current_window
     
     def merge_adjacent_windows(self, ast_windows: list[list[ASTNode]]) -> Generator[list[ASTNode], None, None]:

@@ -19,6 +19,7 @@ def main():
     configs = {
         "max_chunk_size": 1800,
         "language": "python",
+        # "language": "c",
         "metadata_template": "default",
         "chunk_expansion": False
     }

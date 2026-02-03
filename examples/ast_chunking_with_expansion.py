@@ -19,10 +19,11 @@ def main():
     configs = {
         "max_chunk_size": 1800,
         "language": "python",
+        # "language": "c",
         "metadata_template": "default",
         "chunk_expansion": True,
         "repo_level_metadata": {
-            "filepath": "imagen-pytorch/blob/main/imagen_pytorch/trainer.py"
+            "filepath": "code_module"
         }
     }
     
